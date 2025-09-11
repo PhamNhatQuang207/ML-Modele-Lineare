@@ -1,0 +1,11 @@
+reset;
+model model.mod;
+data data.dat;
+
+printf "\n=== 1: Heures utilisees = heures_ouvrees ===\n";
+
+subject to heures_exactes:
+    sum {p in PROD} (qte_produite[p] / vitesse_production[p]) = heures_ouvrees;
+
+solve;
+display qte_produite, profit;

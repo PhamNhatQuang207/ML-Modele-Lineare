@@ -1,0 +1,4 @@
+reset;
+model model.mod;
+data data.dat;
+solve;

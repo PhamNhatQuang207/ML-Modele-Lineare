@@ -1,0 +1,49 @@
+=== 1: Heures utilisees = heures_ouvrees ===
+MINOS 5.51: optimal solution found.
+2 iterations, objective 194828.5714
+qte_produite [*] :=
+  bandes  6000
+ poutres  1028.57
+rouleaux   500
+;
+
+profit = 194829
+
+
+=== 2: Capacite tonnage max ===
+MINOS 5.51: optimal solution found.
+3 iterations, objective 144250
+qte_produite [*] :=
+  bandes  1000
+ poutres   750
+rouleaux  3250
+;
+
+profit = 144250
+
+
+=== 3: Max production totale ===
+MINOS 5.51: optimal solution found.
+2 iterations, objective 194828.5714
+Objective = profit
+qte_produite [*] :=
+  bandes  6000
+ poutres  1028.57
+rouleaux   500
+;
+
+production_totale = 7528.57
+
+
+=== 4: Pourcentage minimal par produit ===
+MINOS 5.51: optimal solution found.
+2 iterations, objective 186445.4114
+Objective = profit
+qte_produite [*] :=
+  bandes  4095.73
+ poutres   750
+rouleaux  2076.74
+;
+
+profit_c4 = 186445
+

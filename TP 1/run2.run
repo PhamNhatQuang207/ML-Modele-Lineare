@@ -1,0 +1,13 @@
+reset;
+model model.mod;
+data data.dat;
+
+printf "\n=== 2: Capacite tonnage max ===\n";
+
+param tonnage_max := 5000;  
+
+subject to capacite_tonnage:
+    sum {p in PROD} qte_produite[p] <= tonnage_max;
+
+solve;
+display qte_produite, profit;

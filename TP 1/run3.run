@@ -1,0 +1,11 @@
+reset;
+model model.mod;
+data data.dat;
+
+printf "\n=== 3: Max production totale ===\n";
+
+maximize production_totale:
+    sum {p in PROD} qte_produite[p];
+
+solve;
+display qte_produite, production_totale;

@@ -1,0 +1,19 @@
+reset;
+model model.mod;
+data data.dat;
+
+printf "\n=== 4: Pourcentage minimal par produit ===\n";
+
+param pourcentage_min {PROD};
+let pourcentage_min["bandes"]   := 0.20;
+let pourcentage_min["rouleaux"] := 0.30;
+let pourcentage_min["poutres"]  := 0.10;
+
+subject to contrainte_part {p in PROD}:
+    qte_produite[p] >= pourcentage_min[p] * sum {j in PROD} qte_produite[j];
+
+maximize profit_c4:
+    sum {p in PROD} qte_produite[p] * prix_vente[p];
+
+solve;
+display qte_produite, profit_c4;
