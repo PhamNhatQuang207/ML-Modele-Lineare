@@ -1,0 +1,9 @@
+set OBJETS := telephone dvd montre;
+
+param: valeur poids volume dispo :=
+telephone 20 0.2 125   20
+dvd       35 1.0 15000 15
+montre    10 0.3 50    50 ;
+
+param poidsMax := 30;
+param volumeMax := 200000;

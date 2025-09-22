@@ -1,0 +1,8 @@
+set MEDIA := TV Mag;
+
+param: cout audience travail dispo_min :=
+TV   20 1800 1  10
+Mag  10 1000 3   0 ;
+
+param budget := 1000;   # 1 million €
+param travailMax := 100;   # 100 personnes-semaines
