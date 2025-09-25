@@ -8,8 +8,8 @@ param dispo {OBJETS} >= 0;
 param poidsMax >= 0;
 param volumeMax >= 0;
 
-# variable: nombre d’objets à acheter
-var x {i in OBJETS} >= 0, <= dispo[i];   # par défaut linéaire, si cần nguyên: declare integer
+# variable: nombre d'objets à acheter
+var x {i in OBJETS} integer >= 0, <= dispo[i];   # par défaut linéaire, si besoin d'entiers: declare integer
 
 maximize profit:
     sum {i in OBJETS} valeur[i] * x[i];
