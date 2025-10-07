@@ -2,19 +2,20 @@ set INGREDIENTS := courgettes carottes lentilles boeuf dinde oeufs pates riz cre
 
 set RECETTES := riz_courg boeuf_car riz_boul grat_pates pates_oeufs vege_ouf vege_pas_ouf;
 
-param: stock prix :=
-courgettes    2    2.1
-carottes      2    1.8
-lentilles     2    3
-boeuf         0.8  25
-dinde         1.5  16
-oeufs         2.3  8
-pates         5.0  1.5
-riz           3.0  2.2
-creme         0.50 10
-sauce_tomate  1.0  3.2
-huile         1.0  4.5
-fromage       0.75 12 ;
+param: stock prix calories :=
+courgettes 2 2.1 170
+carottes 2 1.8 410
+lentilles 2 3 1160
+boeuf 0.8 25 2500
+dinde 1.5 16 1600
+oeufs 2.3 8 1430
+pates 5.0 1.5 3500
+riz 3.0 2.2 3600
+creme 0.50 10 3000
+sauce_tomate 1 3.2 500
+huile 1 4.5 9000
+fromage 0.75 12 3800
+;
 
 param pourc: riz_courg boeuf_car riz_boul grat_pates pates_oeufs vege_ouf vege_pas_ouf :=
 courgettes     40  0   10  0   0   20  10
