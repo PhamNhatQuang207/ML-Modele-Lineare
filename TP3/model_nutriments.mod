@@ -35,6 +35,35 @@ s.t. Diversite {j in RECETTES}:
     w[j] <= 0.4 * sum {k in RECETTES} w[k];
 
 # ----------------------------- #
+#        Planification          #
+# ----------------------------- #
+
+set JOURS := 1..15;
+
+# Recette cuisinée ou non (binaire)
+var y {RECETTES} binary;
+
+# Si cuisinée, au moins 2 plats
+s.t. LienCuisine {r in RECETTES}:
+    nombre_plats[r] <= 15 * y[r];
+
+s.t. MinDeuxPlats {r in RECETTES}:
+    nombre_plats[r] >= 2 * y[r];
+
+# Planification quotidienne
+var x {JOURS, RECETTES} binary;
+
+s.t. UnPlatParJour {j in JOURS}:
+    sum {r in RECETTES} x[j,r] = 1;
+
+s.t. TotalPlatsRecette {r in RECETTES}:
+    sum {j in JOURS} x[j,r] = nombre_plats[r];
+
+# Espacement d'au moins 4 jours entre deux plats identiques
+s.t. Espacement {r in RECETTES, j in 1..15-4}:
+    sum {t in j..j+4} x[t, r] <= 1;
+
+# ----------------------------- #
 #     Données nutritionnelles   #
 # ----------------------------- #
 
@@ -71,6 +100,9 @@ var TotalPlates >= 0;
 s.t. DefTotal:
     TotalPlates = sum {j in RECETTES} nombre_plats[j];
 
+s.t. Total15Jours:
+    TotalPlates = 15;
+
 # Contraintes nutritionnelles moyennes
 s.t. Avg_glucide_low:
     sum {j in RECETTES} w[j] * N_glucide[j] >= min_glucide * TotalPlates;
@@ -95,6 +127,7 @@ s.t. Avg_fibre_low:
 
 s.t. Avg_fibre_high:
     sum {j in RECETTES} w[j] * N_fibre[j] <= max_fibre * TotalPlates;
+
 
 # Objectif : minimiser le coût des ingrédients restants
 minimize CoutRestes:
