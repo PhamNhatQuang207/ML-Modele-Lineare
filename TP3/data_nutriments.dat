@@ -4,6 +4,9 @@ set INGREDIENTS := courgettes carottes lentilles boeuf dinde oeufs pates riz cre
 
 set RECETTES := riz_courg boeuf_car riz_boul grat_pates pates_oeufs vege_ouf vege_pas_ouf;
 
+set NUTRIMENTS := glucide proteine lipide fibre;
+
+
 param: stock prix calories :=
 courgettes     2    2.1   170
 carottes       2    1.8   410
@@ -34,7 +37,10 @@ huile             0     10        10      0      2      0      5
 fromage           1      0         0      5      3     20      0;
 
 # --- Données nutritionnelles (en pourcentage du poids de l’ingrédient) ---
-param: glucide_percent proteine_percent lipide_percent fibre_percent :=
+# Provided as a two-dimensional parameter to match the model's
+# `param nutr_percent {INGREDIENTS, NUTRIMENTS}` declaration.
+param nutr_percent :
+              glucide proteine lipide fibre :=
 courgettes     3   1   0.3  1.1
 carottes       9   0.9 0.2  2.8
 lentilles     20   9   0.4  8
@@ -46,14 +52,14 @@ riz           78   7   0.6  0.4
 creme          3   2  30    0
 sauce_tomate   5   1   5    2
 huile          0   0 100    0
-fromage        1  28  28    0;
+fromage        1  28  28    0
+;
 
 # --- Bornes nutritionnelles (g/repas) ---
-param min_glucide := 200;
-param max_glucide := 500;
-param min_proteine := 80;
-param max_proteine := 350;
-param min_lipide := 50;
-param max_lipide := 90;
-param min_fibre := 20;
-param max_fibre := 30;
+param : minNutr maxNutr :=
+glucide   200   500
+proteine   80   350
+lipide     50    90
+fibre      20    30;
+
+end;

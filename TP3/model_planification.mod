@@ -1,37 +1,36 @@
-# Ornicar - Minimiser le coût des ingrédients restants (avec contraintes nutritionnelles générales)
+# Ornicar - Minimiser le coût des ingrédients restants (avec contraintes nutritionnelles)
 
 set INGREDIENTS;
 set RECETTES;
 set NUTRIMENTS;
-
-# --- Paramètres de base ---
+# Paramètres
 param stock {INGREDIENTS} >= 0;          # kg disponible
 param prix  {INGREDIENTS} >= 0;          # €/kg
 param calories {INGREDIENTS} >= 0;       # kcal/kg
-param pourc {INGREDIENTS, RECETTES} >= 0; # pourcentage (%) de l'ingrédient i dans la recette j
+param pourc {INGREDIENTS,RECETTES} >= 0; # pourcentage (%) de l'ingrédient i dans la recette j
 
-# --- Variables principales ---
+# Variables
 var w {RECETTES} >= 0;                    # poids (kg) de chaque recette
-var nombre_plats {RECETTES} integer >= 0; # nombre total de plats préparés
+var nombre_plats {RECETTES} integer >= 0; # nombre total de plats
 
-# --- Proportion d'ingrédients dans chaque recette ---
+# Définition : a[i,j] = proportion (kg ingrédient i / kg recette j)
 param a {i in INGREDIENTS, j in RECETTES} := pourc[i,j] / 100;
 
-# --- Calories par kg de recette ---
+# Calcul des calories par kg de recette
 param calories_per_kg {j in RECETTES} := sum {i in INGREDIENTS} a[i,j] * calories[i];
 
-# --- Masse d’un plat (kg) pour 2000 kcal ---
+# q[j] = kg de recette j pour 2000 kcal
 param q {j in RECETTES} := 2000 / calories_per_kg[j];
 
-# --- Lien entre le poids total et le nombre de plats ---
+# Lien entre le poids total cuisiné et le nombre de plats
 s.t. LienPoids {j in RECETTES}:
     w[j] = q[j] * nombre_plats[j];
 
-# --- Contraintes de stock ---
+# Contraintes de stock
 s.t. StockLimit {i in INGREDIENTS}:
     sum {j in RECETTES} a[i,j] * w[j] <= stock[i];
 
-# --- Diversité : aucune recette ne dépasse 40% du total cuisiné ---
+# Diversité : chaque recette < 40% du poids total
 s.t. Diversite {j in RECETTES}:
     w[j] <= 0.4 * sum {k in RECETTES} w[k];
 
@@ -71,12 +70,30 @@ s.t. Nutriment_max {n in NUTRIMENTS}:
     sum {j in RECETTES} w[j] * N_recette[j,n] <= maxNutr[n] * TotalPlates;
 
 # ----------------------------- #
-#          OBJECTIF             #
+#        Planification          #
 # ----------------------------- #
 
-# Minimiser le coût des ingrédients restants
-minimize CoutRestes:
-    sum {i in INGREDIENTS} prix[i] *
-        (stock[i] - sum {j in RECETTES} a[i,j] * w[j]);
+set JOURS := 1..15;
 
-# ----------------------------- #
+# Recette cuisinée ou non (binaire)
+var y {RECETTES} binary;
+
+# Si cuisinée, au moins 2 plats
+s.t. LienCuisine {r in RECETTES}:
+    nombre_plats[r] <= 15 * y[r];
+
+s.t. MinDeuxPlats {r in RECETTES}:
+    nombre_plats[r] >= 2 * y[r];
+
+# Planification quotidienne
+var x {JOURS, RECETTES} binary;
+
+s.t. UnPlatParJour {j in JOURS}:
+    sum {r in RECETTES} x[j,r] = 1;
+
+s.t. TotalPlatsRecette {r in RECETTES}:
+    sum {j in JOURS} x[j,r] = nombre_plats[r];
+
+# Espacement d'au moins 4 jours entre deux plats identiques
+s.t. Espacement {r in RECETTES, j in 1..15-4}:
+    sum {t in j..j+4} x[t, r] <= 1;
