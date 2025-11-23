@@ -1,6 +1,6 @@
 set USINES := A B;
 set PAPIERS := inf moy sup;
-
+set SEMAINES := 1..3;
 param: cout :=
 A 1000
 B 2000
@@ -11,8 +11,14 @@ A 8 1 2
 B 2 1 7
 ;
 
-param demande :=
-inf 16
-moy 5
-sup 20
+param demande: inf moy sup :=
+1 16 18 22
+2 10 8 9
+3 20 14 23
+;
+
+param stock_initial :=
+inf 4
+moy 7
+sup 0
 ;
