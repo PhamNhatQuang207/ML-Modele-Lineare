@@ -7,7 +7,7 @@ param production {USINES, PAPIERS} >= 0;
 param stock_initial {PAPIERS} >= 0;
 
 #Variable
-var jours_ouvres {SEMAINES, USINES} >= 0;
+var jours_ouvres {SEMAINES, USINES} integer >= 0;
 var qte_produite {SEMAINES, PAPIERS} >= 0;
 var qte_stock {SEMAINES, PAPIERS} >= 0;
 
