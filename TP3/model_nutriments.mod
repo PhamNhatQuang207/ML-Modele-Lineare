@@ -59,10 +59,6 @@ var TotalPlates >= 0;
 s.t. DefTotal:
     TotalPlates = sum {j in RECETTES} nombre_plats[j];
 
-# Ornicar prépare 15 plats (1 par jour pendant 15 jours)
-s.t. Total15Jours:
-    TotalPlates = 15;
-
 # --- Contraintes nutritionnelles moyennes ---
 s.t. Nutriment_min {n in NUTRIMENTS}:
     sum {j in RECETTES} w[j] * N_recette[j,n] >= minNutr[n] * TotalPlates;
