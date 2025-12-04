@@ -1,0 +1,25 @@
+set BISCUITS := amamde framboise violette bergamote chocolat;
+param n := 4;
+param : poidsStockMax :=
+1 144
+2 220
+3 300
+4 240;
+param coutStockage := 10;
+param nbEspaceStock := 2;
+param poidsStockMin := 20;
+param commande:
+            1   2   3   4 :=
+amamde      0   140 0   170
+framboise   110 20 140  110
+violette    150 160 100 50
+bergamote   90  0   80  210
+chocolat    10  110 10  200;
+
+param productionMax:
+            1   2   3   4 :=
+amamde      160 170 180 170
+framboise   140 110 130 110
+violette    200 180 160 110
+bergamote   100 150 100 180
+chocolat    160 170 160 160;
